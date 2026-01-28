@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Be My Valentine 💖</title>
+
+<style>
+/* Body and background */
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Comic Sans MS', cursive;
+    overflow: hidden;
+    text-align: center;
+    background: radial-gradient(circle, #ffe6f0, #ffd6e8);
+    position: relative;
+}
+
+.container {
+    z-index: 2;
+}
+
+/* Heart glow overlay */
+.heart-glow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background: radial-gradient(circle at center, rgba(255,0,100,0.1) 0%, transparent 70%);
+    animation: glowPulse 3s ease-in-out infinite;
+    z-index: 1;
+}
+
+@keyframes glowPulse {
+    0%,100% { opacity: 0.6; }
+    50% { opacity: 1; }
+}
+
+h1 {
+    color: #c9184a;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 2;
+}
+
+/* Teddy bears */
+.bear {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: #d9987f; /* teddy color */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 50px;
+    margin: 0 10px;
+}
+
+.dance {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    animation: sway 3s ease-in-out infinite;
+}
+
+.bear-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.name {
+    margin-top: 8px;
+    font-size: 22px;
+    font-weight: bold;
+    animation: fadeIn 2s ease forwards;
+}
+
+.kiana { color: #ff4d6d; }
+.rovic { color: #4d96ff; }
+
+.letter {
+    font-size: 20px;
+    color: #c9184a;
+    margin-top: 20px;
+    max-width: 500px;
+    line-height: 1.5;
+    display: none;
+    z-index: 2;
+}
+
+/* Buttons */
+.buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 20px;
+    z-index: 2;
+}
+
+button {
+    font-size: 20px;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#yesBtn { background-color: #ff4d6d; color: white; }
+#noBtn { background-color: #adb5bd; color: white; }
+
+/* Animations */
+@keyframes sway {
+    0% { transform: rotate(-5deg); }
+    50% { transform: rotate(5deg); }
+    100% { transform: rotate(-5deg); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Petals */
+.petal {
+    position: fixed;
+    top: -40px;
+    font-size: 24px;
+    animation: fall linear forwards;
+    pointer-events: none;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="heart-glow"></div>
+
+<div class="container">
+    <div id="bearArea">
+        <div class="bear">🧸</div>
+    </div>
+
+    <h1 id="question">Can you be my Valentine? 💖</h1>
+
+    <div class="buttons" id="buttons">
+        <button id="yesBtn">Yes 💘</button>
+        <button id="noBtn">No 🙃</button>
+    </div>
+
+    <div class="letter" id="letter">
+        Hi Baby ko! labas tayo sa sa 14 ah, I love you, sobra
+    </div>
+</div>
+
+<audio id="song" preload="auto">
+    <source src="until-i-found-you.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const yesBtn = document.getElementById("yesBtn");
+const noBtn = document.getElementById("noBtn");
+const buttons = document.getElementById("buttons");
+const bearArea = document.getElementById("bearArea");
+const question = document.getElementById("question");
+const song = document.getElementById("song");
+const letter = document.getElementById("letter");
+
+let scale = 1;
+
+noBtn.addEventListener("click", () => {
+    scale += 0.2;
+    yesBtn.style.transform = `scale(${scale})`;
+});
+
+yesBtn.addEventListener("click", () => {
+    buttons.remove();
+    question.innerText = "";
+
+    // Two bears holding hands (flex with gap)
+    bearArea.innerHTML = `
+        <div class="dance">
+            <div class="bear-box">
+                <div class="bear">🧸</div>
+                <div class="name kiana">Kiana 💕</div>
+            </div>
+            <div class="bear-box">
+                <div class="bear">🧸</div>
+                <div class="name rovic">Rovic 💙</div>
+            </div>
+        </div>
+    `;
+
+    letter.style.display = "block";
+
+    song.volume = 0.7;
+    song.play().catch(() => {
+        alert("Tap anywhere first, then press Yes again 💕");
+    });
+
+    startPetals();
+});
+
+function startPetals() {
+    setInterval(() => {
+        const petal = document.createElement("div");
+        petal.className = "petal";
+        petal.innerText = "🌹";
+        petal.style.left = Math.random() * 100 + "vw";
+        petal.style.animationDuration = (Math.random() * 3 + 3) + "s";
+        document.body.appendChild(petal);
+
+        setTimeout(() => petal.remove(), 6000);
+    }, 300);
+}
+</script>
+
+</body>
+</html>
